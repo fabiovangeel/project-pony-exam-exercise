@@ -3,8 +3,10 @@ package be.ucll.controller;
 import org.springframework.web.bind.annotation.RestController;
 
 import be.ucll.model.Animal;
+import be.ucll.model.Stable;
 import be.ucll.service.AnimalService;
 import be.ucll.service.ServiceException;
+import be.ucll.service.StableService;
 import jakarta.validation.Valid;
 
 import java.util.HashMap;
@@ -27,9 +29,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("animals")
 public class AnimalRestController {
     private AnimalService animalService;
+    private StableService stableService;
 
-    public AnimalRestController(AnimalService animalService) {
+    public AnimalRestController(AnimalService animalService, StableService stableService) {
         this.animalService = animalService;
+        this.stableService = stableService;
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -72,4 +76,24 @@ public class AnimalRestController {
         return animalService.getOldestAnimal();
     }
 
+    @PostMapping("/{animalName}/stable")
+    public Stable addAnimalToNewStable(@PathVariable String animalName, @Valid @RequestBody Stable stable) {
+        return animalService.addAnimalToNewStable(animalName, stable);
+    }
+
+    @PostMapping("/{animalName}")
+    public Stable addAnimalToExistingStable(@PathVariable String animalName,
+            @RequestParam(value = "stableId", required = true) Long stableId) {
+        return animalService.addAnimalToExistingStable(animalName, stableId);
+    }
+
+    @GetMapping("/stables")
+    public List<Stable> getAllStables() {
+        return stableService.getAllStables();
+    }
+
+    @GetMapping("/{animalName}/stable")
+    public Stable getStableByAnimalName(@PathVariable String animalName) {
+        return stableService.findStableByAnimal(animalName);
+    }
 }

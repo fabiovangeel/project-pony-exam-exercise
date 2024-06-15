@@ -119,4 +119,125 @@ public class AnimalIntegrationTests {
                         }
                         """);
     }
+
+    @Test
+    public void givenAnimal_whenAddAnimalToNewStable_ThenStableIsCreatedAndAnimalIsAdded() {
+        webTestClient.post()
+                .uri("/animals/Tom/stable")
+                .header("Content-Type", "application/json")
+                .bodyValue("""
+                        {
+                        "name": "cowStable",
+                        "maxAnimals": 8
+                        }
+                        """)
+                .exchange()
+                .expectStatus().is2xxSuccessful()
+                .expectBody()
+                .json("""
+                        {
+                        "id": 4,
+                        "name": "cowStable",
+                        "maxAnimals": 8,
+                        "animals": [
+                            {
+                            "name": "Tom",
+                            "age": 5
+                            }
+                        ]
+                        }
+                        """);
+    }
+
+    @Test
+    public void givenAnimal_whenAddAnimalToExistingStable_ThenStableIsCreatedAndAnimalIsAdded() {
+        webTestClient.post()
+                .uri("animals/Freddy?stableId=1")
+                .header("Content-Type", "application/json")
+                .exchange()
+                .expectStatus().is2xxSuccessful()
+                .expectBody()
+                .json("""
+                        {
+                        "id": 1,
+                        "name": "HomeStable",
+                        "maxAnimals": 6,
+                        "animals": [
+                            {
+                            "name": "Ben",
+                            "age": 8
+                            },
+                            {
+                            "name": "Freddy",
+                            "age": 12
+                            }
+                        ]
+                        }
+                        """);
+    }
+
+    @Test
+    public void givenGetAllStables_whenStablesInDatabase_thenReturnAllStables() {
+        webTestClient.get()
+                .uri("/animals/stables")
+                .header("Content-Type", "application/json")
+                .exchange()
+                .expectStatus().is2xxSuccessful()
+                .expectBody()
+                .json("""
+                        [
+                        {
+                            "id": 1,
+                            "name": "HomeStable",
+                            "maxAnimals": 6,
+                            "animals": [
+                            {
+                                "name": "Ben",
+                                "age": 8
+                            }
+                            ]
+                        },
+                        {
+                            "id": 2,
+                            "name": "PonyStable",
+                            "maxAnimals": 10,
+                            "animals": [
+                            {
+                                "name": "Tony",
+                                "age": 15
+                            }
+                            ]
+                        },
+                        {
+                            "id": 3,
+                            "name": "ChickenStable",
+                            "maxAnimals": 4,
+                            "animals": []
+                        }
+                        ]
+                            """);
+    }
+
+    @Test
+    public void givenAnimalName_whenFindStableByName_thenReturnStable() {
+        webTestClient.get()
+                .uri("/animals/Ben/stable")
+                .header("Content-Type", "application/json")
+                .exchange()
+                .expectStatus().is2xxSuccessful()
+                .expectBody()
+                .json("""
+                        {
+                        "id": 1,
+                        "name": "HomeStable",
+                        "maxAnimals": 6,
+                        "animals": [
+                            {
+                            "name": "Ben",
+                            "age": 8
+                            }
+                        ]
+                        }
+                        """);
+    }
 }

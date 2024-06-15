@@ -60,4 +60,12 @@ public class AnimalTest {
         assertEquals(1, violations.size());
         assertEquals("Age must be a positive integer between 1 and 50.", violations.iterator().next().getMessage());
     }
+
+    @Test
+    public void givenInvalidAgeAbove50_whenCreatingAnimal_thenExceptionIsThrown() {
+        Animal animal = new Animal("Ben", 51);
+        Set<ConstraintViolation<Animal>> violations = validator.validate(animal);
+        assertEquals(1, violations.size());
+        assertEquals("Age must be a positive integer between 1 and 50.", violations.iterator().next().getMessage());
+    }
 }
