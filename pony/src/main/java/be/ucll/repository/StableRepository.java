@@ -10,5 +10,5 @@ import be.ucll.model.Animal;
 
 @Repository
 public interface StableRepository extends JpaRepository<Stable, Long> {
-    Optional<Stable> findById(Long id);
+    Stable findByAddressId(Long id);
 }

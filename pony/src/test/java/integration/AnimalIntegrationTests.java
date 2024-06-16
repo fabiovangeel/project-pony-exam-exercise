@@ -20,9 +20,6 @@ public class AnimalIntegrationTests {
     private WebTestClient webTestClient;
 
     @Autowired
-    private AnimalRepository animalRepository;
-
-    @Autowired
     private DbInitializer dbInitializer;
 
     @BeforeEach
@@ -62,22 +59,30 @@ public class AnimalIntegrationTests {
                 .expectBody()
                 .json("""
                         [
-                        {
+                          {
                             "name": "Ben",
                             "age": 8
-                        },
-                        {
+                          },
+                          {
                             "name": "Tom",
                             "age": 5
-                        },
-                        {
+                          },
+                          {
                             "name": "Freddy",
                             "age": 12
-                        },
-                        {
+                          },
+                          {
                             "name": "Tony",
                             "age": 15
-                        }
+                          },
+                          {
+                            "name": "Juul",
+                            "age": 5
+                          },
+                          {
+                            "name": "Luna",
+                            "age": 5
+                          }
                         ]
                         """);
     }
@@ -159,19 +164,33 @@ public class AnimalIntegrationTests {
                 .expectBody()
                 .json("""
                         {
-                        "id": 1,
-                        "name": "HomeStable",
-                        "maxAnimals": 6,
-                        "animals": [
+                          "id": 1,
+                          "name": "HomeStable",
+                          "maxAnimals": 6,
+                          "animals": [
                             {
-                            "name": "Ben",
-                            "age": 8
+                              "name": "Ben",
+                              "age": 8
                             },
                             {
-                            "name": "Freddy",
-                            "age": 12
+                              "name": "Juul",
+                              "age": 5
+                            },
+                            {
+                              "name": "Luna",
+                              "age": 5
+                            },
+                            {
+                              "name": "Freddy",
+                              "age": 12
                             }
-                        ]
+                          ],
+                          "address": {
+                            "id": 1,
+                            "street": "Halensebaan",
+                            "number": 9,
+                            "place": "Waanrode"
+                          }
                         }
                         """);
     }
@@ -186,36 +205,52 @@ public class AnimalIntegrationTests {
                 .expectBody()
                 .json("""
                         [
-                        {
+                          {
                             "id": 1,
                             "name": "HomeStable",
                             "maxAnimals": 6,
                             "animals": [
-                            {
+                              {
                                 "name": "Ben",
                                 "age": 8
+                              },
+                              {
+                                "name": "Juul",
+                                "age": 5
+                              },
+                              {
+                                "name": "Luna",
+                                "age": 5
+                              }
+                            ],
+                            "address": {
+                              "id": 1,
+                              "street": "Halensebaan",
+                              "number": 9,
+                              "place": "Waanrode"
                             }
-                            ]
-                        },
-                        {
+                          },
+                          {
                             "id": 2,
                             "name": "PonyStable",
                             "maxAnimals": 10,
                             "animals": [
-                            {
+                              {
                                 "name": "Tony",
                                 "age": 15
-                            }
-                            ]
-                        },
-                        {
+                              }
+                            ],
+                            "address": null
+                          },
+                          {
                             "id": 3,
                             "name": "ChickenStable",
                             "maxAnimals": 4,
-                            "animals": []
-                        }
+                            "animals": [],
+                            "address": null
+                          }
                         ]
-                            """);
+                        """);
     }
 
     @Test
@@ -227,16 +262,30 @@ public class AnimalIntegrationTests {
                 .expectStatus().is2xxSuccessful()
                 .expectBody()
                 .json("""
-                        {
-                        "id": 1,
-                        "name": "HomeStable",
-                        "maxAnimals": 6,
-                        "animals": [
+                                                {
+                          "id": 1,
+                          "name": "HomeStable",
+                          "maxAnimals": 6,
+                          "animals": [
                             {
-                            "name": "Ben",
-                            "age": 8
+                              "name": "Ben",
+                              "age": 8
+                            },
+                            {
+                              "name": "Juul",
+                              "age": 5
+                            },
+                            {
+                              "name": "Luna",
+                              "age": 5
                             }
-                        ]
+                          ],
+                          "address": {
+                            "id": 1,
+                            "street": "Halensebaan",
+                            "number": 9,
+                            "place": "Waanrode"
+                          }
                         }
                         """);
     }

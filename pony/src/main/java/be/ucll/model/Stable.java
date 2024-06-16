@@ -12,7 +12,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -25,6 +27,14 @@ public class Stable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
     @Column
     @NotBlank(message = "Name is required.")
     private String name;
@@ -36,6 +46,11 @@ public class Stable {
     @OneToMany(mappedBy = "stable")
     @JsonManagedReference
     private List<Animal> animals = new ArrayList<>();
+
+    @OneToOne
+    @JoinColumn(name = "address_id")
+    @Valid
+    private Address address;
 
     public List<Animal> getAnimals() {
         return animals;
