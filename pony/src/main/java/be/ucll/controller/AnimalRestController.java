@@ -4,9 +4,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import be.ucll.model.Animal;
 import be.ucll.model.Stable;
+import be.ucll.model.Toy;
 import be.ucll.service.AnimalService;
 import be.ucll.service.ServiceException;
 import be.ucll.service.StableService;
+import be.ucll.service.ToyService;
 import jakarta.validation.Valid;
 
 import java.util.HashMap;
@@ -24,16 +26,19 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
 @RequestMapping("animals")
 public class AnimalRestController {
     private AnimalService animalService;
     private StableService stableService;
+    private ToyService toyService;
 
-    public AnimalRestController(AnimalService animalService, StableService stableService) {
+    public AnimalRestController(AnimalService animalService, StableService stableService, ToyService toyService) {
         this.animalService = animalService;
         this.stableService = stableService;
+        this.toyService = toyService;
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -96,4 +101,15 @@ public class AnimalRestController {
     public Stable getStableByAnimalName(@PathVariable String animalName) {
         return stableService.findStableByAnimal(animalName);
     }
+
+    @PostMapping("/toy")
+    public Toy addToy(@Valid @RequestBody Toy toy) {
+        return toyService.addToy(toy);
+    }
+
+    @PutMapping("{name}/toy/{id}")
+    public Animal assignToyToAnimal(@PathVariable String name, @PathVariable Long id) {
+        return toyService.assignToyToAnimal(name, id);
+    }
+
 }

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import be.ucll.model.Address;
 import be.ucll.model.Animal;
 import be.ucll.model.Stable;
+import be.ucll.model.Toy;
 import jakarta.annotation.PostConstruct;
 
 @Component
@@ -14,13 +15,15 @@ public class DbInitializer {
     private AnimalRepository animalRepository;
     private StableRepository stableRepository;
     private AddressRepository addressRepository;
+    private ToyRepository toyRepository;
 
     @Autowired
     public DbInitializer(AnimalRepository animalRepository, StableRepository stableRepository,
-            AddressRepository addressRepository) {
+            AddressRepository addressRepository, ToyRepository toyRepository) {
         this.animalRepository = animalRepository;
         this.stableRepository = stableRepository;
         this.addressRepository = addressRepository;
+        this.toyRepository = toyRepository;
     }
 
     @PostConstruct
@@ -68,5 +71,15 @@ public class DbInitializer {
 
         homeStable.setAddress(homeAddress);
         stableRepository.save(homeStable);
+
+        Toy ball = new Toy("Ball");
+        toyRepository.save(ball);
+        ben.addToy(ball);
+        animalRepository.save(ben);
+
+        toyRepository.save(ball);
+        Toy stick = new Toy("Stick");
+        toyRepository.save(stick);
+
     }
 }

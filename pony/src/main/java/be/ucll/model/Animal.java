@@ -1,11 +1,16 @@
 package be.ucll.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Max;
@@ -29,6 +34,10 @@ public class Animal {
     @JoinColumn(name = "stable_id")
     @JsonBackReference
     private Stable stable;
+
+    @ManyToMany
+    @JoinTable(name = "ANIMAL_TOYS", joinColumns = @JoinColumn(name = "animal_id"), inverseJoinColumns = @JoinColumn(name = "toy_id"))
+    private List<Toy> toys = new ArrayList<>();
 
     public Animal(String name, int age) {
         this.name = name;
@@ -62,4 +71,16 @@ public class Animal {
         this.stable = stable;
     }
 
+    public void addToy(Toy toy) {
+        toys.add(toy);
+        toy.getAnimals().add(this);
+    }
+
+    public List<Toy> getToys() {
+        return toys;
+    }
+
+    public void setToys(List<Toy> toys) {
+        this.toys = toys;
+    }
 }
