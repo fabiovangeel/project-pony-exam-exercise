@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,6 +13,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -38,6 +40,10 @@ public class Animal {
     @ManyToMany
     @JoinTable(name = "ANIMAL_TOYS", joinColumns = @JoinColumn(name = "animal_id"), inverseJoinColumns = @JoinColumn(name = "toy_id"))
     private List<Toy> toys = new ArrayList<>();
+
+    @OneToMany(mappedBy = "animal")
+    @JsonManagedReference
+    private List<MedicalRecord> medicalRecords = new ArrayList<>();
 
     public Animal(String name, int age) {
         this.name = name;
@@ -82,5 +88,17 @@ public class Animal {
 
     public void setToys(List<Toy> toys) {
         this.toys = toys;
+    }
+
+    public List<MedicalRecord> getMedicalRecords() {
+        return medicalRecords;
+    }
+
+    public void setMedicalRecords(List<MedicalRecord> medicalRecords) {
+        this.medicalRecords = medicalRecords;
+    }
+
+    public void addMedicalRecord(MedicalRecord medicalRecord) {
+        medicalRecords.add(medicalRecord);
     }
 }

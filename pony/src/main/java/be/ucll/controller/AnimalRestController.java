@@ -3,6 +3,7 @@ package be.ucll.controller;
 import org.springframework.web.bind.annotation.RestController;
 
 import be.ucll.model.Animal;
+import be.ucll.model.DomainException;
 import be.ucll.model.Stable;
 import be.ucll.model.Toy;
 import be.ucll.service.AnimalService;
@@ -46,6 +47,14 @@ public class AnimalRestController {
     public Map<String, String> handleServiceException(ServiceException ex) {
         Map<String, String> errors = new HashMap<>();
         errors.put("ServiceException", ex.getMessage());
+        return errors;
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(DomainException.class)
+    public Map<String, String> handleDomainException(DomainException ex) {
+        Map<String, String> errors = new HashMap<>();
+        errors.put("DomainException", ex.getMessage());
         return errors;
     }
 

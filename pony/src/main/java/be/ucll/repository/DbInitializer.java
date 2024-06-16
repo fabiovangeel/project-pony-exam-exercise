@@ -1,10 +1,13 @@
 package be.ucll.repository;
 
+import java.time.LocalDate;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import be.ucll.model.Address;
 import be.ucll.model.Animal;
+import be.ucll.model.MedicalRecord;
 import be.ucll.model.Stable;
 import be.ucll.model.Toy;
 import jakarta.annotation.PostConstruct;
@@ -16,14 +19,17 @@ public class DbInitializer {
     private StableRepository stableRepository;
     private AddressRepository addressRepository;
     private ToyRepository toyRepository;
+    private MedicalRecordRepository medicalRecordRepository;
 
     @Autowired
     public DbInitializer(AnimalRepository animalRepository, StableRepository stableRepository,
-            AddressRepository addressRepository, ToyRepository toyRepository) {
+            AddressRepository addressRepository, ToyRepository toyRepository,
+            MedicalRecordRepository medicalRecordRepository) {
         this.animalRepository = animalRepository;
         this.stableRepository = stableRepository;
         this.addressRepository = addressRepository;
         this.toyRepository = toyRepository;
+        this.medicalRecordRepository = medicalRecordRepository;
     }
 
     @PostConstruct
@@ -81,5 +87,10 @@ public class DbInitializer {
         Toy stick = new Toy("Stick");
         toyRepository.save(stick);
 
+        MedicalRecord medicalRecord1 = new MedicalRecord(LocalDate.of(2024, 1, 12), "Animal had a fever.");
+        medicalRecordRepository.save(medicalRecord1);
+        medicalRecord1.setAnimal(ben);
+        animalRepository.save(ben);
+        medicalRecordRepository.save(medicalRecord1);
     }
 }

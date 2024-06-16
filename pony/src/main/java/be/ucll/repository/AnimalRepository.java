@@ -18,4 +18,6 @@ public interface AnimalRepository extends JpaRepository<Animal, String> {
     Animal findFirstByOrderByAgeDesc();
 
     Optional<Animal> findById(String Name);
+
+    List<Animal> findByMedicalRecordsIsNotNullAndMedicalRecordsClosingDateIsNull();
 }
